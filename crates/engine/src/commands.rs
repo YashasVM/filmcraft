@@ -3980,9 +3980,15 @@ fn build() -> Vec<CommandSpec> {
             has_seq,
             |s, p| { keyframe_op(s, p, "add") }
         ),
-        cmd!("effects.deleteKeyframe", "Delete Keyframe", [], None, r#"{"clip":id,"effect":str|index,"param":str,"mediaTime":ticks}"#, has_seq, |s, p| {
-            keyframe_op(s, p, "delete")
-        }),
+        cmd!(
+            "effects.deleteKeyframe",
+            "Delete Keyframe",
+            [],
+            None,
+            r#"{"clip":id?,"effect":str|index?,"param":str?,"mediaTime":ticks?,"keyframes":[{clip:id,effect:index,param:str,mask:index?,time:ticks}]?}"#,
+            has_seq,
+            |s, p| { if p.get("keyframes").is_some() { crate::keyframe_move::delete_many(s, p) } else { keyframe_op(s, p, "delete") } }
+        ),
         cmd!(
             "effects.moveKeyframe",
             "Move Keyframe",

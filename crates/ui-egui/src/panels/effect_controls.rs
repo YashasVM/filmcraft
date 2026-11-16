@@ -963,8 +963,8 @@ fn param_value_widget(
 }
 
 /// Shared by the lane diamonds and graph points: commands use media time and preserve the mask.
-/// The rows and their order are Premiere's (Cut, Copy and Paste have no keyframe command yet, and
-/// Select All waits for Clear to act on the whole selection); `current` is the keyframe's
+/// The rows and their order are Premiere's (Cut, Copy, Paste and Select All have no keyframe
+/// command yet); `current` is the keyframe's
 /// interpolation, the checked row.
 fn keyframe_menu(
     app: &mut FilmcraftApp,
@@ -983,7 +983,7 @@ fn keyframe_menu(
     let response = crate::menus::checked_entry(ui, tl!("Clear"), true, None);
     app.auto.add("effectControls.keyframeMenu.clear", response.rect, "Clear");
     if response.clicked() {
-        actions.push(("effects.deleteKeyframe".into(), params.clone()));
+        actions.push(("effects.deleteKeyframe".into(), interpolated.clone()));
         ui.close();
     }
     for group in [
@@ -1005,6 +1005,48 @@ fn keyframe_menu(
                 params["interpolation"] = json!(key);
                 actions.push(("effects.setInterpolation".into(), params));
                 ui.close();
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod issue_4587_menu_tests {
+    use super::*;
+
+    #[test]
+    fn issue_4587_clear_menu_uses_selection_only_when_target_is_selected() {
+        for selected in [true, false] {
+            let mut app = FilmcraftApp::new(filmcraft_engine::Session::default());
+            let target = KeyframeRef { clip: 1, effect: 0, param: "scale".into(), mask: None, time: Tick(10) };
+            app.ui.keyframe_selection =
+                vec![KeyframeRef { time: Tick(if selected { 10 } else { 30 }), ..target.clone() }, KeyframeRef { time: Tick(20), ..target.clone() }];
+            let ctx = egui::Context::default();
+            crate::theme::install(&ctx, &app.tokens);
+            let mut time = 0.0;
+            let mut frame = |app: &mut FilmcraftApp, events| {
+                time += 0.1;
+                app.auto.elements.clear();
+                let mut actions = Vec::new();
+                let mut out = ctx.run_ui(egui::RawInput { time: Some(time), events, ..Default::default() }, |ui| {
+                    keyframe_menu(app, ui, target.clone(), filmcraft_project::Interpolation::Linear, &mut actions);
+                });
+                out.textures_delta.clear();
+                actions
+            };
+            frame(&mut app, vec![]);
+            let element = app.auto.elements.iter().find(|e| e.id == "effectControls.keyframeMenu.clear").unwrap();
+            let pos = pos2(element.rect[0] + element.rect[2] / 2.0, element.rect[1] + element.rect[3] / 2.0);
+            let button = |pressed| egui::Event::PointerButton { pos, button: egui::PointerButton::Primary, pressed, modifiers: Default::default() };
+            frame(&mut app, vec![egui::Event::PointerMoved(pos), button(true)]);
+            let actions = frame(&mut app, vec![button(false)]);
+            let (command, params) = actions.iter().find(|(id, _)| id == "effects.deleteKeyframe").expect("Clear was clicked");
+            assert_eq!(command, "effects.deleteKeyframe");
+            if selected {
+                assert_eq!(params["keyframes"].as_array().map(Vec::len), Some(2), "Clear ignored the selected keys: {params}");
+            } else {
+                assert!(params.get("keyframes").is_none());
+                assert_eq!(params["mediaTime"], 10);
             }
         }
     }

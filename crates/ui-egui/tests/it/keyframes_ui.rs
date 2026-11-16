@@ -862,22 +862,28 @@ fn keyframe_menu_has_premieres_rows_and_checks_the_current_interpolation() {
     }
 }
 
-/// #265: with every keyframe selected (⌘A in Effect Controls), Clear from a keyframe's menu still
-/// deletes only the right-clicked keyframe. This pins today's behaviour; Clear acting on the whole
-/// selection, as in Premiere, comes with Select All back in the menu.
+/// #4587: Clear from a selected keyframe's menu removes the whole multi-lane selection in
+/// one undo step, matching the interpolation and drag operations.
 #[test]
-fn keyframe_menu_clear_deletes_only_the_clicked_keyframe_of_a_selection() {
+fn keyframe_menu_clear_deletes_the_whole_selection_in_one_undo() {
     let (mut d, clip) = Driver::demo();
-    let (diamond, time) = three_keyframes_first_easing_in(&mut d, &clip);
+    let (diamond, _) = three_keyframes_first_easing_in(&mut d, &clip);
     let selected = |d: &mut Driver| d.ok("ui.inspect", json!({}))["ui"]["keyframe_selection"].as_array().map_or(0, Vec::len);
     d.ok("ui.set", json!({"focused": "EffectControls"}));
     d.ok("ui.key", json!({"key": "Cmd+A"}));
     d.frames(2);
     d.right_click(&diamond);
     assert_eq!(selected(&mut d), 3, "the right-clicked keyframe is part of the whole selection");
+    let undo = d.undo_len();
+    let before = serde_json::to_value(&d.harness.state().session.project).unwrap();
     d.click("effectControls.keyframeMenu.clear");
     let scale = d.scale(&clip).0;
     let position = d.parameter(&clip, "motion", "position").keyframes.len();
-    assert_eq!((scale.len(), position), (1, 1), "2 of 3 keyframes remain: {scale:?}");
-    assert!(!scale.contains(&time), "the right-clicked Scale keyframe is the one deleted");
+    assert_eq!((scale.len(), position), (0, 0), "selected keyframes remain: {scale:?}");
+    assert_eq!(d.undo_len(), undo + 1);
+    let after = serde_json::to_value(&d.harness.state().session.project).unwrap();
+    d.exec("edit.undo", json!({}));
+    assert_eq!(serde_json::to_value(&d.harness.state().session.project).unwrap(), before);
+    d.exec("edit.redo", json!({}));
+    assert_eq!(serde_json::to_value(&d.harness.state().session.project).unwrap(), after);
 }

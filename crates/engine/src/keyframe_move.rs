@@ -1,5 +1,5 @@
 //! Atomic edits of keys across effect/mask parameters: movement, where the common timeline delta
-//! keeps relative timing intact, including at the clip boundaries, and interpolation. Selection
+//! keeps relative timing intact, including at the clip boundaries, interpolation and deletion. Selection
 //! itself is a UI concern.
 use std::collections::{BTreeMap, HashSet};
 
@@ -131,6 +131,37 @@ pub(crate) fn interpolate_many(s: &mut Session, p: &Value) -> Result<Value> {
     Ok(Value::Null)
 }
 
+/// Clear a keyframe selection in one transaction. Validate every requested key before deleting
+/// any: a stale selection must not silently remove only part of an editor's work.
+pub(crate) fn delete_many(s: &mut Session, p: &Value) -> Result<Value> {
+    const DELETE: &str = "effects.deleteKeyframe";
+    let raw = p.get("keyframes").and_then(Value::as_array).ok_or_else(|| bad(DELETE, "need keyframes"))?;
+    if raw.is_empty() || raw.len() > MAX_KEYS {
+        return Err(bad(DELETE, "keyframe count must be between 1 and 4096"));
+    }
+    let keys: Vec<Key> = serde_json::from_value(Value::Array(raw.clone())).map_err(|_| bad(DELETE, "invalid keyframe reference"))?;
+    let mut unique = HashSet::new();
+    for key in &keys {
+        if key.param.len() > 256 || !unique.insert(key.clone()) {
+            return Err(bad(DELETE, "duplicate or invalid keyframe reference"));
+        }
+    }
+    s.edit_sequence("Delete Keyframes", |sequence, _, _| {
+        for key in &keys {
+            let lane = (key.clip, key.effect, key.mask, key.param.clone());
+            if !param_mut(sequence, &lane, DELETE)?.keyframes.iter().any(|k| k.time == key.time) {
+                return Err(bad(DELETE, "keyframe does not exist"));
+            }
+        }
+        for key in &keys {
+            let lane = (key.clip, key.effect, key.mask, key.param.clone());
+            param_mut(sequence, &lane, DELETE)?.remove_keyframe_at(key.time);
+        }
+        Ok(())
+    })?;
+    Ok(json!({"removed": keys.len()}))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -155,6 +186,74 @@ mod tests {
     fn values(s: &Session, key: &Value) -> Vec<Keyframe> {
         let it = s.active_sequence().unwrap().find_item(ClipId(key["clip"].as_u64().unwrap())).unwrap().1;
         it.effects[key["effect"].as_u64().unwrap() as usize].params[key["param"].as_str().unwrap()].keyframes.clone()
+    }
+
+    #[test]
+    fn issue_4587_clear_selected_keys_across_lanes_is_one_undo_step() {
+        let (mut s, keys) = fixture();
+        let before = serde_json::to_value(&s.project).unwrap();
+        let undo = s.history.undo.len();
+        s.execute("effects.deleteKeyframe", json!({"keyframes": [keys[0], keys[2]]})).unwrap();
+        assert_eq!(values(&s, &keys[0]).len(), 1);
+        assert_eq!(values(&s, &keys[0])[0].time.0, keys[1]["time"].as_i64().unwrap());
+        assert!(values(&s, &keys[2]).is_empty());
+        assert_eq!(s.history.undo.len(), undo + 1);
+        let after = serde_json::to_value(&s.project).unwrap();
+        s.undo();
+        assert_eq!(serde_json::to_value(&s.project).unwrap(), before);
+        s.redo();
+        assert_eq!(serde_json::to_value(&s.project).unwrap(), after);
+    }
+
+    #[test]
+    fn issue_4587_invalid_clear_preserves_project_and_history() {
+        let (mut s, keys) = fixture();
+        let before = s.project.clone();
+        let undo = s.history.undo.len();
+        let mut invalid = keys[2].clone();
+        invalid["time"] = json!(i64::MAX);
+        for request in [
+            json!({"keyframes": [keys[0], invalid]}),
+            json!({"keyframes": [keys[0], keys[0]]}),
+            json!({"keyframes": []}),
+            json!({"keyframes": vec![keys[0].clone(); MAX_KEYS + 1]}),
+            json!({"keyframes": "all"}),
+        ] {
+            assert!(s.execute("effects.deleteKeyframe", request).is_err());
+            assert!(Arc::ptr_eq(&before, &s.project));
+            assert_eq!(s.history.undo.len(), undo);
+        }
+    }
+
+    #[test]
+    fn issue_4587_mixed_mask_and_effect_keys_undo_and_reject_without_losing_redo() {
+        let (mut s, keys) = fixture();
+        let clip = keys[0]["clip"].as_u64().unwrap();
+        s.execute("masks.add", json!({"clip": clip, "effect": "opacity", "shape": "ellipse"})).unwrap();
+        s.execute("effects.addKeyframe", json!({"clip": clip, "effect": "opacity", "mask": 0, "param": "feather"})).unwrap();
+        let item = s.active_sequence().unwrap().find_item(ClipId(clip)).unwrap().1;
+        let opacity = item.effects.iter().position(|effect| effect.effect == "opacity").unwrap();
+        let time = item.effects[opacity].masks[0].param("feather").unwrap().keyframes[0].time;
+        let mask = json!({"clip": clip, "effect": opacity, "mask": 0, "param": "feather", "time": time.0});
+        let before = serde_json::to_value(&s.project).unwrap();
+        s.execute("effects.deleteKeyframe", json!({"keyframes": [keys[0], mask]})).unwrap();
+        let item = s.active_sequence().unwrap().find_item(ClipId(clip)).unwrap().1;
+        assert!(item.effects[opacity].masks[0].param("feather").unwrap().keyframes.is_empty());
+        assert_eq!(values(&s, &keys[0]).len(), 1);
+        s.undo();
+        assert_eq!(serde_json::to_value(&s.project).unwrap(), before);
+        let project = s.project.clone();
+        let redo = s.history.redo.len();
+        let undo = s.history.undo.len();
+        let mut stale = mask;
+        stale["time"] = json!(i64::MAX);
+        assert!(s.execute("effects.deleteKeyframe", json!({"keyframes": [keys[0], stale]})).is_err());
+        assert!(Arc::ptr_eq(&project, &s.project));
+        assert_eq!(s.history.redo.len(), redo);
+        assert_eq!(s.history.undo.len(), undo);
+        s.redo();
+        let item = s.active_sequence().unwrap().find_item(ClipId(clip)).unwrap().1;
+        assert!(item.effects[opacity].masks[0].param("feather").unwrap().keyframes.is_empty());
     }
 
     #[test]
