@@ -1,0 +1,39 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+warning: workspace (manifest) generated 1 warning
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling filmcraft-dng v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/dng)
+   Compiling filmcraft-media v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/media)
+   Compiling filmcraft-project v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/project)
+   Compiling filmcraft-codecs v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/codecs)
+   Compiling filmcraft-captions v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/captions)
+   Compiling filmcraft-format v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/format)
+   Compiling filmcraft-render v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/render)
+   Compiling filmcraft-export v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/export)
+   Compiling filmcraft-speech v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/speech)
+   Compiling filmcraft-interchange v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/interchange)
+   Compiling filmcraft-edit v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/edit)
+   Compiling filmcraft-engine v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/engine)
+   Compiling filmcraft-gpu v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/gpu)
+   Compiling filmcraft-platform v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/platform)
+   Compiling filmcraft-ui-egui v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/ui-egui)
+    Finished `test` profile [optimized + debuginfo] target(s) in 3m 14s
+     Running tests/it/main.rs (/workspace/work/filmcraft/target/debug/build/filmcraft-ui-egui/33dbd8ea38ccecb8/out/it-33dbd8ea38ccecb8)
+
+running 1 test
+test keyframes_ui::keyframe_menu_clear_deletes_the_whole_selection_in_one_undo ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 805 filtered out; finished in 0.55s
+

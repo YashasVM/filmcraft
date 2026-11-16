@@ -1,0 +1,55 @@
+{
+  "workflow": "user-pasted sol-loop",
+  "base": "7215e46c8ff42d40bd4aa73f9fb688baf5524b18",
+  "default_branch": "main",
+  "origin_main": "c979757bb92c0b87228ba02aa59fc6dab2e2f82a",
+  "diff_command": "git diff 7215e46c8ff42d40bd4aa73f9fb688baf5524b18",
+  "untracked_files": [
+    "apps/filmcraft-cli/tests/it/issue_regressions.rs",
+    "crates/engine/src/issue_regressions_tests.rs"
+  ],
+  "before": {
+    "files": 17,
+    "insertions": 711,
+    "deletions": 80,
+    "tracked_shortstat": "15 files changed, 499 insertions(+), 80 deletions(-)"
+  },
+  "budget": 3,
+  "route": "native Codex Sol subagent; T3 capabilities expose no parent thread",
+  "provider": "Codex",
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "reviewer_id": "/root/sol_review",
+  "rounds": [
+    {
+      "round": 1,
+      "scope": "full base-to-working-tree diff, including untracked tests",
+      "state": "completed",
+      "usage": null,
+      "verdict": "APPROVE",
+      "functional_score": 9.3,
+      "findings": []
+    }
+  ],
+  "findings": [],
+  "pushed": false,
+  "pr_filed": false,
+  "after": {
+    "files": 17,
+    "insertions": 711,
+    "deletions": 80,
+    "tracked_shortstat": "15 files changed, 499 insertions(+), 80 deletions(-)"
+  },
+  "outcome": "agreed: approval on current scoped behavior diff; no open blocker or should; stop early",
+  "changes_in_this_loop": [],
+  "declined_findings": [],
+  "fresh_regressions_passed": 18,
+  "fresh_issue_filtered_tests_passed": 20,
+  "full_suite_from_prior_run": {
+    "passed": 4342,
+    "failed": 5,
+    "ignored": 24,
+    "rerun_this_loop": false
+  },
+  "usage_note": "not exposed"
+}

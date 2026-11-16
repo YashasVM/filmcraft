@@ -1,0 +1,37 @@
+[
+  {
+    "file": "before-4891-header.png",
+    "original_bytes": 2765798,
+    "compressed_bytes": 40192,
+    "identical_decompressed_pixel_stream": true,
+    "pixel_stream_sha256": "d3bc02d571fa3b7711c21196e97ce197ade079ece6a6e447ded806b082cc2149"
+  },
+  {
+    "file": "after-4891-header.png",
+    "original_bytes": 2765798,
+    "compressed_bytes": 38750,
+    "identical_decompressed_pixel_stream": true,
+    "pixel_stream_sha256": "0fcaa39029f7a1dbdc1551a73705381d5db635f8b0849d272017c7aa76f04445"
+  },
+  {
+    "file": "before-4587-panel.png",
+    "original_bytes": 468301,
+    "compressed_bytes": 21268,
+    "identical_decompressed_pixel_stream": true,
+    "pixel_stream_sha256": "422a7d1131e0ebb056cd94e8843421b8069215b1e18f17716e95d0b6bdec3fde"
+  },
+  {
+    "file": "after-4587-panel.png",
+    "original_bytes": 468301,
+    "compressed_bytes": 20888,
+    "identical_decompressed_pixel_stream": true,
+    "pixel_stream_sha256": "1998baa696fbc4cc43bd0fc4443ea7d6cf6e36a9d21679b825900e829986e514"
+  },
+  {
+    "file": "after-4891-wide-header.png",
+    "original_bytes": 5185363,
+    "compressed_bytes": 52720,
+    "identical_decompressed_pixel_stream": true,
+    "pixel_stream_sha256": "a6cab443c21dea11b66722cff0be5421f2b6301fc02c27a60fe51a22ee57f351"
+  }
+]

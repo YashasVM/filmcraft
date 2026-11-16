@@ -1,0 +1,15 @@
+
+running 1 test
+
+thread 'workflows::phone_vfr_clip_extract_gain_title_to_h264_mp4' (80003) panicked at apps/filmcraft-cli/tests/it/workflows.rs:211:5:
+export frame 20: expected source frame 20 (diff 19.04), closest is 20 (diff 19.04)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test workflows::phone_vfr_clip_extract_gain_title_to_h264_mp4 ... FAILED
+
+failures:
+
+failures:
+    workflows::phone_vfr_clip_extract_gain_title_to_h264_mp4
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 29 filtered out; finished in 2.33s
+

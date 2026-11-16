@@ -1,0 +1,105 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+warning: workspace (manifest) generated 1 warning
+    Updating git repository `https://github.com/storytold/craft-libs`
+    Updating git repository `https://github.com/storytold/craft-libs`
+    Updating crates.io index
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+ Downloading crates ...
+  Downloaded simd_helpers v0.1.0
+  Downloaded profiling-procmacros v1.0.18
+  Downloaded aligned v0.4.3
+  Downloaded equator v0.4.2
+  Downloaded pastey v0.1.1
+  Downloaded as-slice v0.2.1
+  Downloaded new_debug_unreachable v1.0.6
+  Downloaded arg_enum_proc_macro v0.3.4
+  Downloaded maybe-rayon v0.1.1
+  Downloaded noop_proc_macro v0.3.0
+  Downloaded num-derive v0.4.2
+  Downloaded equator-macro v0.4.2
+  Downloaded num-integer v0.1.47
+  Downloaded aligned-vec v0.6.4
+  Downloaded num-rational v0.4.2
+  Downloaded v_frame v0.3.9
+  Downloaded av1-grain v0.2.5
+  Downloaded no_std_io2 v0.9.4
+  Downloaded anyhow v1.0.104
+  Downloaded built v0.8.1
+  Downloaded bitstream-io v4.10.0
+  Downloaded itertools v0.14.0
+  Downloaded y4m v0.8.0
+  Downloaded av-scenechange v0.14.1
+  Downloaded paste v1.0.15
+  Downloaded num-bigint v0.4.8
+  Downloaded rav1e v0.8.1
+   Compiling craft-media v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-color v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/color)
+   Compiling filmcraft-time v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/time)
+   Compiling craft-xml v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-dng v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/dng)
+   Compiling filmcraft-frame v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/frame)
+   Compiling craft-audio v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling craft-dpx v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-geom v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/geom)
+   Compiling filmcraft-text v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/text)
+   Compiling filmcraft-media v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/media)
+   Compiling filmcraft-audio-dsp v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/audio-dsp)
+   Compiling filmcraft-project v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/project)
+   Compiling filmcraft-bitstream v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/bitstream)
+   Compiling craft-video v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-captions v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/captions)
+   Compiling filmcraft-render v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/render)
+   Compiling filmcraft-matroska v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/matroska)
+   Compiling filmcraft-isobmff v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/isobmff)
+   Compiling craft-jpeg v0.1.0 (https://github.com/storytold/craft-libs?rev=937ac93c5cf3cd4b6a81e195b078fe161eb081b9#937ac93c)
+   Compiling filmcraft-codecs v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/codecs)
+   Compiling craft-exr v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling craft-tga v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling rustls v0.23.46
+   Compiling filmcraft-cfb v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/cfb)
+   Compiling filmcraft-export v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/export)
+   Compiling craft-fcproj-format v0.1.0 (https://github.com/storytold/craft-libs?rev=6bd1c3dc357f012ddb31c6799ad2e36a1596003d#6bd1c3dc)
+   Compiling filmcraft-interchange v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/interchange)
+   Compiling filmcraft-format v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/format)
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling filmcraft-speech v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/speech)
+   Compiling filmcraft-edit v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/edit)
+   Compiling filmcraft-scopes v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/scopes)
+   Compiling filmcraft-tts v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/tts)
+   Compiling ureq v3.5.0
+   Compiling filmcraft-ui-egui v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/ui-egui)
+   Compiling filmcraft-engine v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/engine)
+   Compiling craft-update v0.1.0 (https://github.com/storytold/craft-libs?rev=47107f660191de2f0b425569506f4daa4faadac9#47107f66)
+   Compiling filmcraft-gpu v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/gpu)
+   Compiling filmcraft-platform v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/platform)
+   Compiling filmcraft-testkit v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/testkit)
+    Finished `test` profile [optimized + debuginfo] target(s) in 4m 22s
+     Running unittests src/lib.rs (/workspace/work/filmcraft/target/debug/build/filmcraft-engine/15ea1bb573e6b5b4/out/filmcraft_engine-15ea1bb573e6b5b4)
+
+running 3 tests
+test keyframe_move::tests::issue_4587_clear_selected_keys_across_lanes_is_one_undo_step ... ok
+test keyframe_move::tests::issue_4587_mixed_mask_and_effect_keys_undo_and_reject_without_losing_redo ... ok
+test keyframe_move::tests::issue_4587_invalid_clear_preserves_project_and_history ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 918 filtered out; finished in 0.03s
+
+     Running unittests src/lib.rs (/workspace/work/filmcraft/target/debug/build/filmcraft-ui-egui/6b18cba08cd31d7f/out/filmcraft_ui_egui-6b18cba08cd31d7f)
+
+running 1 test
+test panels::effect_controls::issue_4587_menu_tests::issue_4587_clear_menu_uses_selection_only_when_target_is_selected ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 360 filtered out; finished in 0.10s
+

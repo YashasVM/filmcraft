@@ -1,0 +1,20 @@
+[
+  {
+    "check": "assets",
+    "command": [
+      "cargo",
+      "xtask",
+      "assets"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "layers",
+    "command": [
+      "cargo",
+      "xtask",
+      "layers"
+    ],
+    "exit": 0
+  }
+]

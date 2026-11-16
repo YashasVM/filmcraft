@@ -1,0 +1,42 @@
+[
+  {
+    "issue": 4587,
+    "path": "crates/engine/src/commands.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4587,
+    "path": "crates/engine/src/keyframe_move.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4587,
+    "path": "crates/ui-egui/src/panels/effect_controls.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4587,
+    "path": "crates/ui-egui/tests/it/keyframes_ui.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4844,
+    "path": "crates/engine/src/commands.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4844,
+    "path": "crates/engine/src/lib.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4891,
+    "path": "crates/ui-egui/src/header.rs",
+    "unchanged_between_bases": true
+  },
+  {
+    "issue": 4891,
+    "path": "crates/ui-egui/src/menus.rs",
+    "unchanged_between_bases": true
+  }
+]

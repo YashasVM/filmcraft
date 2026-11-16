@@ -1,0 +1,89 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+warning: workspace (manifest) generated 1 warning
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Checking craft-media v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-color v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/color)
+    Checking filmcraft-time v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/time)
+    Checking filmcraft-dng v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/dng)
+    Checking craft-xml v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-frame v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/frame)
+    Checking craft-dpx v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-geom v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/geom)
+   Compiling filmcraft-text v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/text)
+    Checking filmcraft-audio-dsp v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/audio-dsp)
+    Checking craft-jpeg v0.1.0 (https://github.com/storytold/craft-libs?rev=937ac93c5cf3cd4b6a81e195b078fe161eb081b9#937ac93c)
+    Checking craft-exr v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking craft-tga v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-testkit v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/testkit)
+    Checking filmcraft-cfb v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/cfb)
+    Checking craft-fcproj-format v0.1.0 (https://github.com/storytold/craft-libs?rev=6bd1c3dc357f012ddb31c6799ad2e36a1596003d#6bd1c3dc)
+    Checking filmcraft-scopes v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/scopes)
+    Checking filmcraft-tts v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/tts)
+   Compiling filmcraft-ui-egui v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/ui-egui)
+    Checking craft-jsonrpc v0.1.0 (https://github.com/storytold/craft-libs?rev=0c15f7c74913880da6bae5927b95f798c2ecf3c3#0c15f7c7)
+   Compiling filmcraft v0.20.1 (/workspace/work/filmcraft-prs/4587/apps/filmcraft)
+    Checking filmcraft-tts-text v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/tts-text)
+    Checking filmcraft-web v0.20.1 (/workspace/work/filmcraft-prs/4587/apps/filmcraft-web)
+    Checking filmcraft-golden v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/golden)
+    Checking xtask v0.20.1 (/workspace/work/filmcraft-prs/4587/xtask)
+    Checking craft-audio v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-matroska v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/matroska)
+    Checking filmcraft-isobmff v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/isobmff)
+    Checking filmcraft-bitstream v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/bitstream)
+    Checking craft-video v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+    Checking filmcraft-media v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/media)
+    Checking filmcraft-project v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/project)
+    Checking filmcraft-codecs v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/codecs)
+    Checking filmcraft-captions v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/captions)
+    Checking filmcraft-render v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/render)
+    Checking filmcraft-interchange v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/interchange)
+    Checking filmcraft-speech v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/speech)
+    Checking filmcraft-format v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/format)
+    Checking filmcraft-edit v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/edit)
+    Checking filmcraft-export v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/export)
+    Checking filmcraft-gpu v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/gpu)
+    Checking filmcraft-platform v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/platform)
+    Checking filmcraft-engine v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/engine)
+    Checking filmcraft-automation v0.20.1 (/workspace/work/filmcraft-prs/4587/crates/automation)
+    Checking filmcraft-cli v0.20.1 (/workspace/work/filmcraft-prs/4587/apps/filmcraft-cli)
+warning: unused dependency `tempfile`
+  --> crates/gpu/Cargo.toml:27:1
+   |
+27 | tempfile = "3"
+   | ^^^^^^^^^^^^^^
+   |
+   = note: `cargo::unused_dependencies` is set to `warn` by default
+help: consider removing the dependency on `tempfile`
+help: to still use for development builds, move to `dev-dependencies`
+warning: unused dependency `tempfile`
+  --> crates/gpu/Cargo.toml:22:1
+   |
+22 | tempfile = "3"
+   | ^^^^^^^^^^^^^^
+   |
+help: consider removing the dependency on `tempfile`
+help: to still use for development builds, move to `dev-dependencies`
+warning: `filmcraft-gpu` (manifest) generated 2 warnings
+warning: unused dependency `filmcraft-color`
+  --> crates/text/Cargo.toml:13:1
+   |
+13 | filmcraft-color = { workspace = true }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::unused_dependencies` is set to `warn` by default
+help: consider removing the dependency on `filmcraft-color`
+warning: `filmcraft-text` (manifest) generated 1 warning
+    Finished `dev` profile [optimized + debuginfo] target(s) in 1m 02s

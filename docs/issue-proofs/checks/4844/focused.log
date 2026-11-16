@@ -1,0 +1,100 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+warning: workspace (manifest) generated 1 warning
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling num-traits v0.2.19
+   Compiling bytemuck_derive v1.12.1
+   Compiling filmcraft-color v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/color)
+   Compiling filmcraft-time v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/time)
+   Compiling craft-xml v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling num-complex v0.4.6
+   Compiling chrono v0.4.45
+   Compiling craft-media v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling moxcms v0.8.1
+   Compiling serde_json v1.0.154
+   Compiling bytemuck v1.25.2
+   Compiling symphonia-core v0.6.1
+   Compiling symphonia-core v0.5.5
+   Compiling image v0.25.10
+   Compiling symphonia-metadata v0.6.1
+   Compiling symphonia-common v0.6.1
+   Compiling symphonia-bundle-flac v0.6.1
+   Compiling symphonia-codec-vorbis v0.6.1
+   Compiling symphonia-codec-alac v0.6.1
+   Compiling symphonia-format-caf v0.6.1
+   Compiling symphonia-format-isomp4 v0.6.1
+   Compiling symphonia-format-mkv v0.6.1
+   Compiling symphonia-codec-aac v0.6.1
+   Compiling symphonia-format-ogg v0.6.1
+   Compiling symphonia-format-riff v0.6.1
+   Compiling symphonia-codec-adpcm v0.6.1
+   Compiling symphonia-bundle-mp3 v0.6.1
+   Compiling symphonia-codec-pcm v0.6.1
+   Compiling filmcraft-dng v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/dng)
+   Compiling symphonia v0.6.1
+   Compiling craft-audio v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling symphonia-metadata v0.5.5
+   Compiling filmcraft-frame v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/frame)
+   Compiling craft-dpx v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-media v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/media)
+   Compiling filmcraft-geom v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/geom)
+   Compiling symphonia-utils-xiph v0.5.5
+   Compiling font-types v0.12.5
+   Compiling read-fonts v0.41.0
+   Compiling filmcraft-project v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/project)
+   Compiling skrifa v0.44.0
+   Compiling harfrust v0.12.0
+   Compiling craft-xml v0.1.0 (https://github.com/storytold/craft-libs?rev=47107f660191de2f0b425569506f4daa4faadac9#47107f66)
+   Compiling craft-captions v0.1.0 (https://github.com/storytold/craft-libs?rev=47107f660191de2f0b425569506f4daa4faadac9#47107f66)
+   Compiling filmcraft-text v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/text)
+   Compiling symphonia-bundle-flac v0.5.5
+   Compiling symphonia-codec-vorbis v0.5.5
+   Compiling symphonia-format-ogg v0.5.5
+   Compiling symphonia-format-isomp4 v0.5.5
+   Compiling symphonia-format-riff v0.5.5
+   Compiling symphonia-bundle-mp3 v0.5.5
+   Compiling symphonia-codec-aac v0.5.5
+   Compiling symphonia-codec-alac v0.5.5
+   Compiling symphonia-codec-pcm v0.5.5
+   Compiling filmcraft-captions v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/captions)
+   Compiling symphonia v0.5.5
+   Compiling filmcraft-bitstream v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/bitstream)
+   Compiling filmcraft-matroska v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/matroska)
+   Compiling filmcraft-isobmff v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/isobmff)
+   Compiling craft-video v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling craft-jpeg v0.1.0 (https://github.com/storytold/craft-libs?rev=937ac93c5cf3cd4b6a81e195b078fe161eb081b9#937ac93c)
+   Compiling craft-y4m v0.1.0 (https://github.com/storytold/craft-libs?rev=25c7a8959cf70cf8c3f076d05baadb0990710569#25c7a895)
+   Compiling filmcraft-render v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/render)
+   Compiling craft-fcproj-format v0.1.0 (https://github.com/storytold/craft-libs?rev=6bd1c3dc357f012ddb31c6799ad2e36a1596003d#6bd1c3dc)
+   Compiling craft-exr v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling craft-tga v0.1.0 (https://github.com/storytold/craft-libs?rev=a64f5a6e4a656f6750e72fc699750ce8a2f6f86f#a64f5a6e)
+   Compiling filmcraft-interchange v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/interchange)
+   Compiling filmcraft-format v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/format)
+   Compiling filmcraft-codecs v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/codecs)
+   Compiling filmcraft-export v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/export)
+   Compiling filmcraft-speech v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/speech)
+   Compiling filmcraft-edit v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/edit)
+   Compiling filmcraft-testkit v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/testkit)
+   Compiling filmcraft-scopes v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/scopes)
+   Compiling filmcraft-tts v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/tts)
+   Compiling filmcraft-engine v0.20.1 (/workspace/work/filmcraft-prs/4844/crates/engine)
+    Finished `test` profile [optimized + debuginfo] target(s) in 3m 37s
+     Running unittests src/lib.rs (/workspace/work/filmcraft/target/debug/build/filmcraft-engine/288d40299d442c36/out/filmcraft_engine-288d40299d442c36)
+
+running 1 test
+test issue_regressions_tests::issue_4844_sequence_uses_first_source_name_unless_explicit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 918 filtered out; finished in 0.02s
+

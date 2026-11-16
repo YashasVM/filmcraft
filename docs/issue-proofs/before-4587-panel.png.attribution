@@ -1,0 +1,8 @@
+asset:        before-4587-panel.png
+title:        FilmCraft issue reproduction screenshot
+author:       @YashasVM (capture); FilmCraft contributors (application and procedural media)
+source:       Original work: native FilmCraft control-channel screenshot
+license:      MIT OR Apache-2.0
+license-file: LICENSE-MIT; LICENSE-APACHE
+added:        2026-11-16 by @YashasVM
+notes:        Actual FilmCraft UI with synthetic demo media or empty state. Lossless PNG stream recompression; identical decompressed pixels. No third-party application screenshots.

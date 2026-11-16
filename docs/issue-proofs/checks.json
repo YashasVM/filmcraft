@@ -1,0 +1,170 @@
+[
+  {
+    "issue": 4587,
+    "check": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4587,
+    "check": "focused",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "filmcraft-engine",
+      "-p",
+      "filmcraft-ui-egui",
+      "--lib",
+      "issue_4587",
+      "--",
+      "--nocapture"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4587,
+    "check": "ui-integration",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "filmcraft-ui-egui",
+      "--test",
+      "it",
+      "keyframe_menu_clear_deletes_the_whole_selection_in_one_undo",
+      "--",
+      "--nocapture"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4587,
+    "check": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4587,
+    "check": "wasm",
+    "command": [
+      "cargo",
+      "xtask",
+      "wasm"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4844,
+    "check": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4844,
+    "check": "focused",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "filmcraft-engine",
+      "--lib",
+      "issue_4844",
+      "--",
+      "--nocapture"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4844,
+    "check": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4844,
+    "check": "wasm",
+    "command": [
+      "cargo",
+      "xtask",
+      "wasm"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4891,
+    "check": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4891,
+    "check": "focused",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "-p",
+      "filmcraft-ui-egui",
+      "--lib",
+      "--",
+      "--test-threads=4"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4891,
+    "check": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0
+  },
+  {
+    "issue": 4891,
+    "check": "wasm",
+    "command": [
+      "cargo",
+      "xtask",
+      "wasm"
+    ],
+    "exit": 0
+  }
+]

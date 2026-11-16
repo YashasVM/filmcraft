@@ -1,0 +1,22 @@
+{
+  "selected_keys_before": [
+    {
+      "clip": 29,
+      "effect": 0,
+      "param": "scale",
+      "time": 360215856000
+    },
+    {
+      "clip": 29,
+      "effect": 0,
+      "param": "scale",
+      "time": 487350864000
+    }
+  ],
+  "expected_remaining_keys": 0,
+  "actual_remaining_keys": 1,
+  "scale": {
+    "keyframes": 1,
+    "value": "Float(100.0)"
+  }
+}

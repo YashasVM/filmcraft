@@ -1,0 +1,16 @@
+{
+  "command": [
+    "ffmpeg",
+    "-v",
+    "error",
+    "-i",
+    "target/fixtures/media/exr/gbrpf32le_half_none.exr",
+    "-f",
+    "rawvideo",
+    "-pix_fmt",
+    "gbrpf16le",
+    "-"
+  ],
+  "exit": 234,
+  "stderr": "[vost#0:0/rawvideo @ 0x5647099a5580] Unknown pixel format requested: gbrpf16le.\nError opening output file -.\nError opening output files: Invalid argument\n"
+}

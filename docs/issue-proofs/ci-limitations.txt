@@ -1,0 +1,24 @@
+Known validation limitations
+
+The final full workspace run on the original combined ten-fix checkout produced
+4,342 passed, 5 failed, 24 ignored. This is not a full-suite result for the
+isolated PR heads. Their fresh checks are recorded separately under checks/.
+
+Failures:
+1. workflows::phone_vfr_clip_extract_gain_title_to_h264_mp4
+   Original CLI fails identically at frame 20 with difference 19.04.
+   Evidence: baseline-existing-workflow.log.
+2. export_tests::every_builtin_preset_exports_and_ffprobe_confirms
+   The installed ffprobe returns null for the APV codec name even on an export
+   produced by the original CLI. Evidence: baseline-apv-oracle.json.
+3. exr_oracle::exr_stills_match_ffmpeg
+4. exr_oracle::exr_sequence_plays_linear_float_frames
+   Installed FFmpeg 7.1.5 rejects the gbrpf16le half-float oracle format.
+   Evidence: exr-half-format-diagnostic.json.
+5. marked_playback_position::program_range_playback_rests_on_inclusive_out_frame
+   Playback timed out under the full-run load, but the isolated rerun passes
+   with the same Vulkan/required-GPU environment.
+   Evidence: playback-isolated-rerun.log.
+
+Linux software rendering was used. Windows/macOS and physical audio hardware
+were not tested. Full CI remains required before marking the PRs ready.

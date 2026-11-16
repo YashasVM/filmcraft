@@ -1,0 +1,9 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+layers: ok

@@ -1,0 +1,44 @@
+warning: unused field `repository` in `workspace.package`
+  --> Cargo.toml:11:1
+   |
+11 | repository = "https://github.com/storytold/filmcraft"
+   | ^^^^^^^^^^
+   |
+   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+help: consider removing the field `workspace.package.repository`
+warning: workspace (manifest) generated 1 warning
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: unused dependency `tempfile`
+  --> crates/gpu/Cargo.toml:27:1
+   |
+27 | tempfile = "3"
+   | ^^^^^^^^^^^^^^
+   |
+   = note: `cargo::unused_dependencies` is set to `warn` by default
+help: consider removing the dependency on `tempfile`
+help: to still use for development builds, move to `dev-dependencies`
+warning: unused dependency `tempfile`
+  --> crates/gpu/Cargo.toml:22:1
+   |
+22 | tempfile = "3"
+   | ^^^^^^^^^^^^^^
+   |
+help: consider removing the dependency on `tempfile`
+help: to still use for development builds, move to `dev-dependencies`
+warning: `filmcraft-gpu` (manifest) generated 2 warnings
+warning: unused dependency `filmcraft-color`
+  --> crates/text/Cargo.toml:13:1
+   |
+13 | filmcraft-color = { workspace = true }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::unused_dependencies` is set to `warn` by default
+help: consider removing the dependency on `filmcraft-color`
+warning: `filmcraft-text` (manifest) generated 1 warning
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.79s
