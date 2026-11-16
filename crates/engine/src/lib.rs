@@ -1542,6 +1542,9 @@ mod work_area_tests;
 mod source_placement_tests;
 
 #[cfg(test)]
+mod issue_regressions_tests;
+
+#[cfg(test)]
 mod frame_export_tests;
 #[cfg(test)]
 mod wasm_clock_tests;

@@ -1683,7 +1683,14 @@ fn build() -> Vec<CommandSpec> {
                     return Err(bad("file.newSequence", "at most 256 video and 256 audio tracks are supported"));
                 }
                 let n = s.project.sequences().count() + 1;
-                let name = str_p(p, "name").map(str::to_string).unwrap_or_else(|| format!("Sequence {n:02}"));
+                let name = str_p(p, "name")
+                    .map(str::to_string)
+                    .or_else(|| {
+                        from_ids.first().and_then(|id| s.project.item(*id)).map(|item| {
+                            std::path::Path::new(&item.name).file_stem().map(|stem| stem.to_string_lossy().into_owned()).unwrap_or_else(|| item.name.clone())
+                        })
+                    })
+                    .unwrap_or_else(|| format!("Sequence {n:02}"));
                 let seq_label = s.prefs.labels.defaults.sequence;
                 let id = s.edit("New Sequence", |pr, st2| {
                     let id = pr.new_sequence(&name, st, nv as usize, na as usize, bin);
