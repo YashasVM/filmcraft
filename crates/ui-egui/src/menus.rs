@@ -1239,6 +1239,27 @@ pub fn menu_bar(app: &mut FilmcraftApp, ui: &mut egui::Ui) {
     let mut clicked: Option<String> = None;
     // The bar's titles and their menus share one size and colour, as in a native menu bar.
     egui::MenuBar::new().style(crate::theme::menu_style).config(egui::containers::menu::MenuConfig::new().style(crate::theme::menu_style)).ui(ui, |ui| {
+        let font = egui::TextStyle::Button.resolve(ui.style());
+        let title_width: f32 = MENUS
+            .iter()
+            .map(|top| {
+                ui.painter().layout_no_wrap(app.ui.language.tr(top).into(), font.clone(), ui.visuals().text_color()).size().x
+                    + ui.spacing().button_padding.x * 2.0
+                    + ui.spacing().item_spacing.x
+            })
+            .sum();
+        let compact = title_width > ui.available_width();
+        if compact {
+            // Long translations can exceed even the whole remaining header. Keep every menu
+            // reachable through one compact button instead of painting titles off the window.
+            let r = ui.menu_button("≡", |ui| {
+                ui.set_min_width(260.0);
+                let all = items.iter().collect::<Vec<_>>();
+                menu_level(ui, &all, 0, &mut clicked, &mut app.auto, &labels);
+            });
+            app.auto.add("menu.overflow", r.response.rect, "Menus");
+            return;
+        }
         let mut titles = Vec::with_capacity(MENUS.len());
         for top in MENUS {
             let mine: Vec<&MenuItem> = items.iter().filter(|i| i.path.first().map(String::as_str) == Some(top)).collect();
@@ -1293,10 +1314,13 @@ fn menu_level(
             subs.push(sub);
             let inner: Vec<&MenuItem> = items.iter().copied().filter(|x| x.path.get(depth).map(String::as_str) == Some(sub)).collect();
             let language = ui.ctx().data(|d| d.get_temp::<crate::i18n::Language>(egui::Id::unique("interface-language"))).unwrap_or_default();
-            ui.menu_button(language.tr(sub), |ui| {
+            let response = ui.menu_button(language.tr(sub), |ui| {
                 ui.set_min_width(220.0);
                 menu_level(ui, &inner, depth + 1, clicked, auto, labels);
             });
+            if depth == 0 {
+                auto.add(&format!("menu.{sub}"), response.response.rect, sub);
+            }
         } else if menu_entry(ui, it, auto, labels) {
             *clicked = Some(it.id.clone());
             ui.close();
@@ -1535,6 +1559,30 @@ mod chord_held_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn issue_4891_compact_menus_keep_ids_and_execute_commands() {
+        use egui_kittest::{Harness, kittest::Queryable};
+        let mut session = filmcraft_engine::Session::default();
+        session.execute("file.openDemoProject", json!({})).unwrap();
+        let clip = session.active_sequence().unwrap().video_tracks[0].items[0].id;
+        session.execute("timeline.select", json!({"clips": [clip.0]})).unwrap();
+        let app = FilmcraftApp::new(session);
+        let tokens = app.tokens;
+        let mut harness = Harness::builder()
+            .with_size(egui::vec2(220.0, 700.0))
+            .with_context_setup(move |ctx| crate::theme::install(ctx, &tokens))
+            .build_ui_state(|ui, app| menu_bar(app, ui), app);
+        harness.run_steps(3);
+        harness.get_by_label("≡").click();
+        harness.run_steps(3);
+        assert!(harness.state().auto.elements.iter().any(|element| element.id == "menu.Edit"));
+        harness.get_by_label("Edit").click();
+        harness.run_steps(3);
+        harness.get_by_label_contains("Deselect All").click();
+        harness.run_steps(3);
+        assert!(harness.state().session.state.selection.is_empty());
+    }
 
     /// A clipboard image is premultiplied inside `Color32`. The PNG writer expects straight
     /// alpha, so a semi-transparent pixel must come back with its colour, not darkened.

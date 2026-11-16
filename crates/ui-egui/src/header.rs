@@ -63,13 +63,24 @@ pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
     let mut left_end = x;
     // In-window menus when there is no native menu bar.
     if app.ui.show_menu_bar {
-        let menu_rect = Rect::from_min_max(pos2(x + 6.0, rect.min.y + 7.0), pos2(x + 520.0, rect.max.y - 7.0));
+        let menu_rect = Rect::from_min_max(pos2(x + 6.0, rect.min.y + 7.0), pos2((rect.max.x - 14.0).max(x + 6.0), rect.max.y - 7.0));
         let mut mu = ui.new_child(egui::UiBuilder::new().max_rect(menu_rect).layout(egui::Layout::left_to_right(egui::Align::Center)));
         mu.style_mut().visuals.widgets.inactive.weak_bg_fill = Color32::TRANSPARENT;
         mu.style_mut().visuals.widgets.inactive.bg_stroke = Stroke::NONE;
         mu.style_mut().visuals.override_text_color = Some(t.text_dim);
+        let first = app.auto.elements.len();
         crate::menus::menu_bar(app, &mut mu);
-        left_end = mu.min_rect().max.x;
+        // MenuBar allocates the full available row, even when its titles occupy only part of
+        // it. Reserve the titles' actual bounds so a wide header keeps its action shortcuts.
+        left_end = app.auto.elements[first..]
+            .iter()
+            .filter(|element| {
+                element.id.strip_prefix("menu.").is_some_and(|name| name == "overflow" || crate::menus::MENUS.contains(&name))
+                    && element.rect[1] >= rect.min.y
+                    && element.rect[1] + element.rect[3] <= rect.max.y
+            })
+            .map(|element| element.rect[0] + element.rect[2])
+            .fold(x, f32::max);
     }
     // Document title, centred
     let title = if app.session.is_dirty() { tlf!("{name} - Edited", name = app.session.project.name) } else { app.session.project.name.clone() };
@@ -77,6 +88,11 @@ pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
     let mut rx = rect.max.x - 14.0;
     let mut btn = |ui: &mut egui::Ui, icon: Icon, id: &str, tip: &str, app: &mut FilmcraftApp| -> egui::Response {
         let r = Rect::from_center_size(pos2(rx - 14.0, rect.center().y), vec2(28.0, 28.0));
+        // Menu titles have priority over optional shortcuts. Hidden shortcuts keep their
+        // commands in the menus and register no overlapping automation or pointer target.
+        if r.min.x < left_end + 12.0 {
+            return ui.interact(Rect::NOTHING, egui::Id::unique(("hdr", id)), Sense::hover());
+        }
         rx -= 38.0;
         let resp = ui.interact(r, egui::Id::unique(("hdr", id)), Sense::click()).on_hover_text(tip);
         app.auto.add(&format!("header.{id}"), r, tip);
@@ -122,42 +138,15 @@ pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
     // workspace name (caps)
     let ws = crate::i18n::to_uppercase(crate::i18n::t(&app.ui.workspace));
     let wg = p.layout_no_wrap(ws.clone(), Tokens::ui(11.0), t.text_dim);
-    let wr = Rect::from_min_size(pos2(rx - wg.size().x + 10.0, rect.center().y - 10.0), vec2(wg.size().x + 8.0, 20.0));
+    let candidate = Rect::from_min_size(pos2(rx - wg.size().x - 8.0, rect.center().y - 10.0), vec2(wg.size().x + 8.0, 20.0));
+    let show_name = candidate.min.x >= left_end + 12.0;
+    let wr = if show_name { candidate } else { Rect::from_min_size(pos2(rx, rect.center().y), egui::Vec2::ZERO) };
     let wresp = ui.interact(wr, egui::Id::unique("hdr-ws-name"), Sense::click());
-    app.auto.add("header.workspaceName", wr, &ws);
-    p.galley_with_override_text_color(pos2(wr.min.x + 4.0, rect.center().y - wg.size().y / 2.0), wg, if wresp.hovered() { t.text } else { t.text_dim });
-    // Community: a labelled Discord button, always one click away.
-    {
-        let label = "Discord";
-        let g = p.layout_no_wrap(label.to_string(), Tokens::ui(12.0), Color32::WHITE);
-        let w = g.size().x + 34.0;
-        let r = Rect::from_min_size(pos2(wr.min.x - w - 14.0, rect.center().y - 12.0), vec2(w, 24.0));
-        let resp = ui.interact(r, egui::Id::unique("hdr-discord"), Sense::click()).on_hover_text(tl!("Join the ArtCraft Discord (discord.gg/artcraft)"));
-        app.auto.add("header.discord", r, "Join the ArtCraft Discord");
-        ui.painter().rect_filled(r, 12.0, if resp.hovered() { t.accent_hover } else { t.accent });
-        icons::paint(ui.painter(), Rect::from_center_size(pos2(r.min.x + 14.0, r.center().y), vec2(14.0, 14.0)), Icon::Chat, Color32::WHITE);
-        ui.painter().galley(pos2(r.min.x + 25.0, r.center().y - g.size().y / 2.0), g, Color32::WHITE);
-        // Localized menus and user titles can be wider than English. Use the actual gap.
-        let left = left_end + 12.0;
-        let right = r.min.x - 12.0;
-        if right > left + 40.0 {
-            let mut job = egui::text::LayoutJob::simple_singleline(title, Tokens::ui(14.0), t.tab_text_active);
-            job.wrap.max_width = right - left;
-            job.wrap.max_rows = 1;
-            let galley = p.layout_job(job);
-            let half = galley.size().x / 2.0;
-            let center = if rect.center().x - half >= left && rect.center().x + half <= right { rect.center().x } else { (left + right) / 2.0 };
-            p.with_clip_rect(Rect::from_min_max(pos2(left, rect.min.y), pos2(right, rect.max.y))).galley(
-                pos2(center - half, rect.center().y - galley.size().y / 2.0),
-                galley,
-                t.tab_text_active,
-            );
-        }
-
-        if resp.clicked() {
-            crate::links::open(app, ui.ctx(), crate::links::DISCORD);
-        }
+    if show_name {
+        app.auto.add("header.workspaceName", wr, &ws);
+        p.galley_with_override_text_color(pos2(wr.min.x + 4.0, rect.center().y - wg.size().y / 2.0), wg, if wresp.hovered() { t.text } else { t.text_dim });
     }
+    title_and_community(app, ui, rect, left_end, wr, title);
     let popup_id = egui::Id::unique("workspaces-popup");
     if ws_resp.clicked() || wresp.clicked() {
         ui.ctx().data_mut(|d| d.insert_temp(popup_id, true));
@@ -204,8 +193,88 @@ pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
     }
 }
 
+fn title_and_community(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect, left_end: f32, wr: Rect, title: String) {
+    let t = app.tokens;
+    let p = ui.painter().clone();
+    // Community: a labelled Discord shortcut when there is room (also in the Help menu).
+    {
+        let label = "Discord";
+        let g = p.layout_no_wrap(label.to_string(), Tokens::ui(12.0), Color32::WHITE);
+        let w = g.size().x + 34.0;
+        let r = Rect::from_min_size(pos2(wr.min.x - w - 14.0, rect.center().y - 12.0), vec2(w, 24.0));
+        let resp = if r.min.x >= left_end + 12.0 {
+            let resp = ui.interact(r, egui::Id::unique("hdr-discord"), Sense::click()).on_hover_text(tl!("Join the ArtCraft Discord (discord.gg/artcraft)"));
+            app.auto.add("header.discord", r, "Join the ArtCraft Discord");
+            ui.painter().rect_filled(r, 12.0, if resp.hovered() { t.accent_hover } else { t.accent });
+            icons::paint(ui.painter(), Rect::from_center_size(pos2(r.min.x + 14.0, r.center().y), vec2(14.0, 14.0)), Icon::Chat, Color32::WHITE);
+            ui.painter().galley(pos2(r.min.x + 25.0, r.center().y - g.size().y / 2.0), g, Color32::WHITE);
+            Some(resp)
+        } else {
+            None
+        };
+        // Localized menus and user titles can be wider than English. Use the actual gap.
+        let left = left_end + 12.0;
+        let right = if resp.is_some() { r.min.x } else { wr.min.x } - 12.0;
+        if right > left + 40.0 {
+            let mut job = egui::text::LayoutJob::simple_singleline(title, Tokens::ui(14.0), t.tab_text_active);
+            job.wrap.max_width = right - left;
+            job.wrap.max_rows = 1;
+            let galley = p.layout_job(job);
+            let half = galley.size().x / 2.0;
+            let center = if rect.center().x - half >= left && rect.center().x + half <= right { rect.center().x } else { (left + right) / 2.0 };
+            p.with_clip_rect(Rect::from_min_max(pos2(left, rect.min.y), pos2(right, rect.max.y))).galley(
+                pos2(center - half, rect.center().y - galley.size().y / 2.0),
+                galley,
+                t.tab_text_active,
+            );
+        }
+
+        if resp.is_some_and(|resp| resp.clicked()) {
+            crate::links::open(app, ui.ctx(), crate::links::DISCORD);
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn issue_4891_menu_titles_do_not_overlap_header_actions() {
+        use super::*;
+        for language in [crate::i18n::Language::En, crate::i18n::Language::De, crate::i18n::Language::Ru, crate::i18n::Language::Es] {
+            crate::i18n::set_current(language);
+            for width in [640.0, 799.0, 800.0, 801.0, 959.0, 960.0, 961.0, 1199.0, 1200.0, 1600.0] {
+                let mut app = FilmcraftApp::new(filmcraft_engine::Session::default());
+                app.ui.language = language;
+                app.ui.show_menu_bar = true;
+                let ctx = egui::Context::default();
+                crate::theme::install(&ctx, &app.tokens);
+                let rect = Rect::from_min_size(pos2(0.0, 0.0), vec2(width, HEIGHT));
+                let mut out =
+                    ctx.run_ui(egui::RawInput { screen_rect: Some(Rect::from_min_size(pos2(0.0, 0.0), vec2(width, 200.0))), ..Default::default() }, |ui| {
+                        show(&mut app, ui, rect);
+                    });
+                out.textures_delta.clear();
+                let bounds = |e: &crate::automation::Element| Rect::from_min_size(pos2(e.rect[0], e.rect[1]), vec2(e.rect[2], e.rect[3]));
+                let menus = app.auto.elements.iter().filter(|e| e.id.starts_with("menu.")).collect::<Vec<_>>();
+                assert!(!menus.is_empty());
+                for menu in &menus {
+                    assert!(bounds(menu).max.x <= rect.max.x, "{} leaves the window at width {width}", menu.id);
+                }
+                if width == 1600.0 {
+                    for id in ["header.fullscreen", "header.quickExport", "header.workspaces", "header.workspaceName", "header.discord"] {
+                        assert!(app.auto.elements.iter().any(|element| element.id == id), "wide header lost {id}");
+                    }
+                }
+                for action in app.auto.elements.iter().filter(|e| e.id.starts_with("header.") && !e.id.starts_with("header.mode.") && e.id != "header.home") {
+                    for menu in &menus {
+                        assert!(!bounds(action).intersects(bounds(menu)), "{} overlaps {} at width {width}", action.id, menu.id);
+                    }
+                }
+            }
+        }
+        crate::i18n::set_current(crate::i18n::Language::En);
+    }
+
     #[test]
     fn workspace_name_uppercasing_is_turkish_aware() {
         crate::i18n::set_current(crate::i18n::Language::Tr);
